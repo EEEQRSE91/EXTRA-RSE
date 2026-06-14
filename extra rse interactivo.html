@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXTRA · Álbum RSE 2024</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --lila: #C9B8D8;
+    --lila-light: #EDE4F5;
+    --beige: #F0E8D5;
+    --beige-dark: #DDD0B8;
+    --morado: #4A1A6B;
+    --teal: #1D7A6E;
+    --teal-light: #E0F2EF;
+    --verde: #2D8B4E;
+    --naranja: #C45E25;
+    --azul: #1A4A7A;
+    --negro: #1A1A1A;
+    --blanco: #FAFAFA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--beige);
+    color: var(--negro);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--lila);
+    text-align: center;
+    padding: 2.5rem 1rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 20px,
+      rgba(255,255,255,.08) 20px, rgba(255,255,255,.08) 40px
+    );
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--morado);
+    color: var(--blanco);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: .3rem .9rem;
+    border-radius: 2px;
+    margin-bottom: .8rem;
+  }
+  .header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 10vw, 6rem);
+    line-height: .9;
+    color: var(--negro);
+    letter-spacing: .02em;
+  }
+  .header h1 span { color: var(--morado); }
+  .header-sub {
+    font-size: .95rem;
+    color: var(--morado);
+    font-weight: 700;
+    margin-top: .5rem;
+    letter-spacing: .05em;
+  }
+
+  /* ── NAV TABS ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--morado);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .3rem;
+    padding: .6rem 1rem;
+    box-shadow: 0 3px 12px rgba(0,0,0,.25);
+  }
+  .nav button {
+    background: transparent;
+    border: 2px solid rgba(255,255,255,.3);
+    color: var(--blanco);
+    font-family: 'Nunito', sans-serif;
+    font-size: .8rem;
+    font-weight: 700;
+    padding: .4rem .9rem;
+    border-radius: 20px;
+    cursor: pointer;
+    letter-spacing: .03em;
+    transition: all .2s;
+  }
+  .nav button:hover, .nav button.active {
+    background: var(--blanco);
+    color: var(--morado);
+    border-color: var(--blanco);
+  }
+
+  /* ── SECTIONS ── */
+  .section { display: none; padding: 2.5rem 1rem 4rem; max-width: 960px; margin: 0 auto; }
+  .section.visible { display: block; }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 7vw, 4rem);
+    line-height: 1;
+    margin-bottom: .3rem;
+  }
+  .section-desc {
+    font-size: .95rem;
+    color: #555;
+    margin-bottom: 2rem;
+    max-width: 600px;
+  }
+
+  /* ── 1. GLOSARIO ── */
+  #glosario .section-title { color: var(--teal); }
+  .glosario-search {
+    display: flex;
+    gap: .5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .glosario-search input {
+    flex: 1;
+    min-width: 200px;
+    padding: .7rem 1rem;
+    border: 2px solid var(--beige-dark);
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: .95rem;
+    background: var(--blanco);
+  }
+  .glosario-search input:focus { outline: none; border-color: var(--teal); }
+  .filter-btns { display: flex; gap: .4rem; flex-wrap: wrap; }
+  .filter-btn {
+    padding: .4rem .8rem;
+    border: 2px solid var(--beige-dark);
+    background: var(--blanco);
+    border-radius: 6px;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .filter-btn.on { background: var(--teal); color: #fff; border-color: var(--teal); }
+
+  .glosario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1rem;
+  }
+  .glosario-card {
+    background: var(--blanco);
+    border-radius: 12px;
+    padding: 1.2rem;
+    border-left: 5px solid var(--teal);
+    box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    transition: transform .2s;
+  }
+  .glosario-card:hover { transform: translateY(-3px); }
+  .glosario-card[data-cat="iso"] { border-left-color: var(--azul); }
+  .glosario-card[data-cat="gestion"] { border-left-color: var(--naranja); }
+  .glosario-card[data-cat="actores"] { border-left-color: var(--verde); }
+  .gc-term {
+    font-weight: 900;
+    font-size: 1rem;
+    color: var(--negro);
+    margin-bottom: .3rem;
+  }
+  .gc-cat {
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    padding: .15rem .5rem;
+    border-radius: 4px;
+    background: var(--teal-light);
+    color: var(--teal);
+    display: inline-block;
+    margin-bottom: .5rem;
+  }
+  .gc-cat.iso { background: #E0EAF5; color: var(--azul); }
+  .gc-cat.gestion { background: #FBE9DC; color: var(--naranja); }
+  .gc-cat.actores { background: #DFF2E7; color: var(--verde); }
+  .gc-def { font-size: .88rem; color: #444; line-height: 1.5; }
+  .glosario-card.hidden { display: none; }
+
+  /* ── 2. QUIZ ── */
+  #quiz .section-title { color: var(--morado); }
+  .quiz-progress-bar {
+    height: 8px;
+    background: var(--beige-dark);
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--morado), var(--lila));
+    border-radius: 4px;
+    transition: width .4s ease;
+  }
+  .quiz-card {
+    background: var(--blanco);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,.1);
+    margin-bottom: 1.5rem;
+  }
+  .quiz-num {
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--lila);
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: .5rem;
+  }
+  .quiz-q {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--negro);
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+  }
+  .quiz-options { display: grid; gap: .6rem; }
+  .quiz-opt {
+    padding: .85rem 1.1rem;
+    border: 2px solid var(--beige-dark);
+    border-radius: 10px;
+    background: var(--blanco);
+    font-family: 'Nunito', sans-serif;
+    font-size: .95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    transition: all .15s;
+  }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--morado); background: var(--lila-light); }
+  .quiz-opt.correct { background: #DFF2E7; border-color: var(--verde); color: var(--verde); }
+  .quiz-opt.wrong { background: #FDECEA; border-color: #C0392B; color: #C0392B; }
+  .quiz-opt:disabled { cursor: default; }
+  .quiz-feedback {
+    margin-top: .8rem;
+    padding: .8rem 1rem;
+    border-radius: 8px;
+    font-size: .9rem;
+    font-weight: 600;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: #DFF2E7; color: var(--verde); }
+  .quiz-feedback.fail { background: #FDECEA; color: #C0392B; }
+  .btn-primary {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: .8rem 1.8rem;
+    background: var(--morado);
+    color: var(--blanco);
+    border: none;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  .btn-primary:hover { opacity: .85; }
+  .quiz-result {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--blanco);
+    border-radius: 16px;
+    display: none;
+  }
+  .quiz-result.show { display: block; }
+  .result-score {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: var(--morado);
+    line-height: 1;
+  }
+  .result-msg { font-size: 1.1rem; font-weight: 600; color: #555; margin: .5rem 0 1.5rem; }
+
+  /* ── 3. CASOS ── */
+  #casos .section-title { color: var(--verde); }
+  .casos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+  }
+  .caso-card {
+    background: var(--blanco);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,.09);
+    transition: transform .2s;
+  }
+  .caso-card:hover { transform: translateY(-4px); }
+  .caso-header {
+    padding: 1.2rem 1.2rem .8rem;
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+  }
+  .caso-emoji { font-size: 2.2rem; }
+  .caso-empresa { font-weight: 900; font-size: 1.05rem; }
+  .caso-pais { font-size: .78rem; color: #888; }
+  .caso-body { padding: 0 1.2rem 1.2rem; }
+  .caso-tag {
+    display: inline-block;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: .2rem .6rem;
+    border-radius: 4px;
+    margin-bottom: .7rem;
+  }
+  .caso-desc { font-size: .88rem; color: #444; line-height: 1.55; margin-bottom: .8rem; }
+  .caso-impacto {
+    background: var(--teal-light);
+    border-radius: 8px;
+    padding: .6rem .8rem;
+    font-size: .82rem;
+    color: var(--teal);
+    font-weight: 700;
+  }
+  .caso-impacto span { font-weight: 400; color: #444; }
+  .caso-materia {
+    margin-top: .5rem;
+    font-size: .78rem;
+    color: #888;
+  }
+
+  /* ── 4. SOPA DE LETRAS ── */
+  #sopa .section-title { color: var(--naranja); }
+  .sopa-layout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  @media(max-width:660px){ .sopa-layout { grid-template-columns: 1fr; } }
+  .sopa-grid {
+    display: inline-grid;
+    gap: 3px;
+    user-select: none;
+    background: var(--blanco);
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.1);
+  }
+  .sopa-row { display: flex; gap: 3px; }
+  .sopa-cell {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Nunito', sans-serif;
+    font-size: .85rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    background: var(--beige);
+    color: var(--negro);
+    transition: background .1s;
+  }
+  .sopa-cell.selected { background: var(--lila); color: var(--morado); }
+  .sopa-cell.found { background: var(--naranja); color: #fff; cursor: default; }
+  .sopa-words { }
+  .sopa-words h3 {
+    font-weight: 900;
+    margin-bottom: 1rem;
+    color: var(--naranja);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .word-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+  }
+  .word-item {
+    background: var(--blanco);
+    border: 2px solid var(--beige-dark);
+    border-radius: 8px;
+    padding: .5rem .8rem;
+    font-size: .85rem;
+    font-weight: 700;
+    color: #555;
+    transition: all .2s;
+  }
+  .word-item.found { background: var(--naranja); color: #fff; border-color: var(--naranja); text-decoration: line-through; }
+  .sopa-status {
+    margin-top: 1.2rem;
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--naranja);
+  }
+
+  /* ── 5. REFLEXIÓN ── */
+  #reflexion .section-title { color: var(--azul); }
+  .compromisos-form {
+    background: var(--blanco);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 16px rgba(0,0,0,.09);
+    max-width: 620px;
+  }
+  .compromisos-form h3 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    margin-bottom: 1.2rem;
+    color: var(--azul);
+  }
+  .compromiso-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .8rem;
+    margin-bottom: 1rem;
+  }
+  .compromiso-num {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    background: var(--azul);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+    margin-top: .3rem;
+  }
+  .compromiso-input {
+    flex: 1;
+    padding: .65rem .9rem;
+    border: 2px solid var(--beige-dark);
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: .95rem;
+    background: var(--beige);
+    resize: none;
+    min-height: 48px;
+  }
+  .compromiso-input:focus { outline: none; border-color: var(--azul); background: #fff; }
+  .reflexion-quote {
+    margin-top: 2.5rem;
+    background: linear-gradient(135deg, var(--morado), var(--azul));
+    color: #fff;
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    max-width: 620px;
+  }
+  .reflexion-quote blockquote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    margin-bottom: .8rem;
+  }
+  .reflexion-quote cite { font-size: .85rem; opacity: .7; font-style: normal; }
+  .reflexion-diploma {
+    margin-top: 2rem;
+    max-width: 620px;
+    background: var(--blanco);
+    border-radius: 16px;
+    border: 3px solid var(--morado);
+    padding: 2rem;
+    text-align: center;
+    display: none;
+  }
+  .reflexion-diploma.show { display: block; }
+  .diploma-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--morado);
+    letter-spacing: .05em;
+    margin-bottom: .3rem;
+  }
+  .diploma-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    color: var(--negro);
+    margin: .5rem 0;
+    border-bottom: 2px solid var(--beige-dark);
+    padding-bottom: .5rem;
+  }
+  .diploma-text { font-size: .9rem; color: #666; line-height: 1.6; }
+  .diploma-star { font-size: 2rem; margin-top: .8rem; }
+  .diploma-compromisos {
+    margin-top: 1rem;
+    text-align: left;
+    background: var(--beige);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+  }
+  .diploma-compromisos h4 { font-size: .85rem; font-weight: 900; color: var(--azul); margin-bottom: .5rem; text-transform: uppercase; letter-spacing: .05em; }
+  .diploma-compromisos ol { padding-left: 1.2rem; font-size: .9rem; color: #444; line-height: 1.8; }
+  .name-input-row { display: flex; gap: .6rem; margin-bottom: 1rem; }
+  .name-input {
+    flex: 1;
+    padding: .65rem .9rem;
+    border: 2px solid var(--beige-dark);
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: .95rem;
+  }
+  .name-input:focus { outline: none; border-color: var(--azul); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--morado);
+    color: rgba(255,255,255,.7);
+    text-align: center;
+    padding: 1.5rem 1rem;
+    font-size: .82rem;
+  }
+  .footer strong { color: #fff; }
+
+  /* ── UTILS ── */
+  .tag-rse { background: #E0EAF5; color: var(--azul); }
+  .tag-ambiental { background: #DFF2E7; color: var(--verde); }
+  .tag-social { background: var(--lila-light); color: var(--morado); }
+  .tag-laboral { background: #FBE9DC; color: var(--naranja); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">Colección Mundial 2024 · #RSE</div>
+  <h1>SECCI<span>Ó</span>N<br>EXTRA</h1>
+  <p class="header-sub">Glosario · Trivia · Casos Reales · Sopa de Letras · Reflexión Final</p>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="active" onclick="show('glosario',this)">📖 Glosario</button>
+  <button onclick="show('quiz',this)">🎯 Trivia RSE</button>
+  <button onclick="show('casos',this)">🌍 Casos Reales</button>
+  <button onclick="show('sopa',this)">🔠 Sopa de Letras</button>
+  <button onclick="show('reflexion',this)">✨ Reflexión Final</button>
+</nav>
+
+<!-- ══════ 1. GLOSARIO ══════ -->
+<section id="glosario" class="section visible">
+  <h2 class="section-title">GLOSARIO RSE</h2>
+  <p class="section-desc">Todos los términos clave que necesitas dominar. Busca, filtra y aprende.</p>
+
+  <div class="glosario-search">
+    <input type="text" id="gs-input" placeholder="Buscar término…" oninput="filterGlosario()">
+    <div class="filter-btns">
+      <button class="filter-btn on" data-cat="all" onclick="setCat('all',this)">Todos</button>
+      <button class="filter-btn" data-cat="fundamentos" onclick="setCat('fundamentos',this)">Fundamentos</button>
+      <button class="filter-btn" data-cat="iso" onclick="setCat('iso',this)">ISO 26000</button>
+      <button class="filter-btn" data-cat="gestion" onclick="setCat('gestion',this)">Gestión</button>
+      <button class="filter-btn" data-cat="actores" onclick="setCat('actores',this)">Actores</button>
+    </div>
+  </div>
+
+  <div class="glosario-grid" id="glosario-grid"></div>
+</section>
+
+<!-- ══════ 2. QUIZ ══════ -->
+<section id="quiz" class="section">
+  <h2 class="section-title">TRIVIA RSE</h2>
+  <p class="section-desc">10 preguntas para poner a prueba tu conocimiento sobre Responsabilidad Social Empresarial.</p>
+
+  <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qpf" style="width:0%"></div></div>
+  <div id="quiz-container"></div>
+  <div class="quiz-result" id="quiz-result">
+    <div class="result-score" id="r-score">0/10</div>
+    <div class="result-msg" id="r-msg"></div>
+    <button class="btn-primary" onclick="resetQuiz()">Volver a intentar 🔄</button>
+  </div>
+</section>
+
+<!-- ══════ 3. CASOS ══════ -->
+<section id="casos" class="section">
+  <h2 class="section-title">CASOS REALES</h2>
+  <p class="section-desc">Empresas que aplican la RSE de manera ejemplar en distintas materias de la ISO 26000.</p>
+  <div class="casos-grid" id="casos-grid"></div>
+</section>
+
+<!-- ══════ 4. SOPA DE LETRAS ══════ -->
+<section id="sopa" class="section">
+  <h2 class="section-title">SOPA DE LETRAS</h2>
+  <p class="section-desc">Encuentra las 10 palabras clave de RSE. Haz clic en la primera y última letra de cada palabra.</p>
+  <div class="sopa-layout">
+    <div>
+      <div class="sopa-grid" id="sopa-grid"></div>
+      <button class="btn-primary" style="margin-top:1rem;background:var(--naranja)" onclick="resetSopa()">Reiniciar 🔄</button>
+    </div>
+    <div class="sopa-words">
+      <h3>Palabras a encontrar</h3>
+      <div class="word-list" id="word-list"></div>
+      <p class="sopa-status" id="sopa-status"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ 5. REFLEXIÓN ══════ -->
+<section id="reflexion" class="section">
+  <h2 class="section-title">REFLEXIÓN FINAL</h2>
+  <p class="section-desc">Completa tus compromisos y genera tu diploma de Agente de Cambio RSE.</p>
+
+  <div class="compromisos-form">
+    <h3>¿Cómo puedes aplicar la RSE en tu vida y futuro profesional?</h3>
+    <div class="name-input-row">
+      <input type="text" class="name-input" id="diploma-name-input" placeholder="Tu nombre completo…">
+    </div>
+    <div id="compromisos-list"></div>
+    <button class="btn-primary" onclick="generarDiploma()">Generar mi diploma 🎓</button>
+  </div>
+
+  <div class="reflexion-quote">
+    <blockquote>"Las empresas son actores sociales, no solo generadores de riqueza."</blockquote>
+    <cite>— Álbum RSE 2024</cite>
+  </div>
+
+  <div class="reflexion-diploma" id="reflexion-diploma">
+    <div class="diploma-title">🏆 DIPLOMA DE AGENTE DE CAMBIO</div>
+    <div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-bottom:.3rem">Álbum RSE 2024 · Edición Académica</div>
+    <div class="diploma-name" id="diploma-name-display">—</div>
+    <div class="diploma-text">Ha completado satisfactoriamente el estudio de los Fundamentos de la RSE, las 7 Materias Fundamentales de la ISO 26000 y el Sistema de Gestión de Responsabilidad Social Empresarial, comprometiéndose a ser un agente de cambio para un futuro más ético, sostenible y responsable.</div>
+    <div class="diploma-compromisos" id="diploma-compromisos-display"></div>
+    <div class="diploma-star">🌱 ⭐ 🌱</div>
+    <div style="font-size:.78rem;color:#aaa;margin-top:.8rem">UPVM · Licenciatura en Administración y Gestión Empresarial · 2024</div>
+    <button class="btn-primary" style="margin-top:1rem" onclick="window.print()">Imprimir diploma 🖨️</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <strong>Álbum RSE 2024 · Sección Extra</strong> — Responsabilidad · Sostenibilidad · Ética<br>
+  Universidad Politécnica del Valle de México
+</footer>
+
+<script>
+/* ─── NAV ─── */
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('visible');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══════════════════════════
+   1. GLOSARIO
+══════════════════════════ */
+const glosarioData = [
+  { term: "RSE", cat: "fundamentos", def: "Responsabilidad Social Empresarial: compromiso voluntario de las organizaciones de actuar de forma ética, responsable y sostenible ante la sociedad, la economía y el medio ambiente." },
+  { term: "Stakeholders", cat: "actores", def: "Grupos de interés que se ven afectados o pueden influir en las decisiones de una organización: empleados, clientes, proveedores, comunidades, gobiernos e inversionistas." },
+  { term: "Valor compartido", cat: "fundamentos", def: "Concepto que demuestra que la rentabilidad y la responsabilidad social son complementarias; las empresas generan valor económico y social simultáneamente." },
+  { term: "ISO 26000", cat: "iso", def: "Norma internacional publicada en 2010 que orienta a cualquier organización para integrar responsabilidad social en sus decisiones. No es certificable." },
+  { term: "Gobernanza organizacional", cat: "iso", def: "Primera materia fundamental de la ISO 26000; se refiere a cómo la organización toma decisiones, promueve la transparencia y la rendición de cuentas." },
+  { term: "Greenwashing", cat: "gestion", def: "Práctica engañosa donde una empresa aparenta ser responsable ambientalmente sin evidencias reales. La comunicación RSE debe evitarlo." },
+  { term: "Triple impacto", cat: "fundamentos", def: "Enfoque que evalúa el desempeño empresarial en tres dimensiones simultáneas: económica, social y ambiental (también llamado triple bottom line)." },
+  { term: "ODS", cat: "fundamentos", def: "Objetivos de Desarrollo Sostenible: 17 metas globales establecidas por la ONU para alcanzar un futuro sostenible para 2030." },
+  { term: "Economía circular", cat: "gestion", def: "Modelo productivo que busca eliminar residuos manteniendo materiales y productos en uso el mayor tiempo posible, reduciendo el impacto ambiental." },
+  { term: "Reporte de sostenibilidad", cat: "gestion", def: "Documento donde la organización informa públicamente sus acciones, resultados e impactos en materia económica, social y ambiental." },
+  { term: "Prácticas laborales", cat: "iso", def: "Tercera materia de la ISO 26000; abarca seguridad, salud, capacitación, estabilidad laboral e igualdad de oportunidades de los trabajadores." },
+  { term: "Filantropía", cat: "fundamentos", def: "Tercera etapa histórica de la RSE: acciones voluntarias de ayuda social y donaciones sin integración estratégica al negocio." },
+  { term: "Mejora continua", cat: "gestion", def: "Principio que guía a las organizaciones a evaluar constantemente sus prácticas RSE y adaptarlas a nuevos desafíos sociales, tecnológicos y ambientales." },
+  { term: "Auditoría social", cat: "gestion", def: "Herramienta de evaluación que revisa las prácticas organizacionales para asegurar el cumplimiento de estándares éticos y sociales." },
+  { term: "GRI", cat: "iso", def: "Global Reporting Initiative: organismo internacional que establece estándares para la elaboración de reportes de sostenibilidad." },
+  { term: "KPI de RSE", cat: "gestion", def: "Indicadores clave de desempeño que miden el impacto social, ambiental y económico: emisiones, satisfacción laboral, inclusión, consumo energético." },
+  { term: "Derechos humanos", cat: "iso", def: "Segunda materia de la ISO 26000; incluye igualdad de oportunidades, no discriminación, libertad de expresión y prevención del trabajo forzoso." },
+  { term: "Participación comunitaria", cat: "iso", def: "Séptima materia de la ISO 26000; promueve la contribución de las organizaciones al desarrollo de las comunidades donde operan." },
+];
+
+let activeCat = 'all';
+function renderGlosario() {
+  const q = document.getElementById('gs-input').value.toLowerCase();
+  const grid = document.getElementById('glosario-grid');
+  grid.innerHTML = '';
+  glosarioData.filter(g =>
+    (activeCat === 'all' || g.cat === activeCat) &&
+    (g.term.toLowerCase().includes(q) || g.def.toLowerCase().includes(q))
+  ).forEach(g => {
+    const catLabel = {fundamentos:'Fundamentos',iso:'ISO 26000',gestion:'Gestión',actores:'Actores'}[g.cat];
+    grid.innerHTML += `<div class="glosario-card" data-cat="${g.cat}">
+      <div class="gc-term">${g.term}</div>
+      <span class="gc-cat ${g.cat}">${catLabel}</span>
+      <p class="gc-def">${g.def}</p>
+    </div>`;
+  });
+  if(!grid.innerHTML) grid.innerHTML = '<p style="color:#aaa;grid-column:1/-1">No se encontraron términos.</p>';
+}
+function filterGlosario(){ renderGlosario(); }
+function setCat(cat, btn){
+  activeCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderGlosario();
+}
+renderGlosario();
+
+/* ══════════════════════════
+   2. QUIZ
+══════════════════════════ */
+const questions = [
+  { q:"¿Cuántas materias fundamentales define la ISO 26000?", opts:["5","7","9","12"], ans:1 },
+  { q:"La RSE integra tres dimensiones. ¿Cuáles son?", opts:["Económica, política y cultural","Económica, social y ambiental","Legal, social y tecnológica","Financiera, operativa y humana"], ans:1 },
+  { q:"¿Qué significa 'greenwashing'?", opts:["Lavar ropa de forma ecológica","Fingir responsabilidad ambiental sin evidencia real","Programa de reciclaje empresarial","Reporte de sostenibilidad certificado"], ans:1 },
+  { q:"¿En qué año fue publicada la ISO 26000?", opts:["2005","2008","2010","2015"], ans:2 },
+  { q:"¿Cuál es la primera materia fundamental de la ISO 26000?", opts:["Medio ambiente","Derechos humanos","Gobernanza organizacional","Prácticas laborales"], ans:2 },
+  { q:"La etapa estratégica de la RSE (1970-80) se caracterizó por:", opts:["Maximización de beneficios únicamente","Donaciones y filantropía","Integración de códigos de ética al negocio","Cumplimiento de leyes laborales básicas"], ans:2 },
+  { q:"¿Qué significa BATNA en negociación? (Relacionado con el valor compartido)", opts:["Mejor Alternativa a un Trato Negociado","Base de Acuerdos Técnicos Normativos Ambientales","Balance Anual Total Neto de Activos","Beneficios Adicionales para Todos los Actores"], ans:0 },
+  { q:"¿Cuál de estos NO es un canal de comunicación RSE?", opts:["Reportes de sostenibilidad","Redes sociales","Auditorías fiscales","Campañas institucionales"], ans:2 },
+  { q:"Los 'stakeholders' son:", opts:["Solo los accionistas de la empresa","Grupos de interés afectados por o que influyen en la organización","Los empleados de nivel directivo únicamente","Los clientes externos de la empresa"], ans:1 },
+  { q:"¿Qué principio resume 'Lo que no se mide, no se puede mejorar'?", opts:["Transparencia organizacional","Evaluación y mejora continua","Gobernanza ética","Participación comunitaria"], ans:1 },
+];
+
+let qIdx = 0, qScore = 0, qAnswered = false;
+function renderQuiz(){
+  if(qIdx >= questions.length){ endQuiz(); return; }
+  const pct = (qIdx/questions.length)*100;
+  document.getElementById('qpf').style.width = pct+'%';
+  const q = questions[qIdx];
+  document.getElementById('quiz-container').innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-num">Pregunta ${qIdx+1} de ${questions.length}</div>
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answer(${i})">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="qfb"></div>
+    </div>
+    ${qIdx<questions.length-1
+      ? `<button class="btn-primary" id="qnext" onclick="nextQ()" style="display:none">Siguiente →</button>`
+      : `<button class="btn-primary" id="qnext" onclick="nextQ()" style="display:none">Ver resultado 🎉</button>`
+    }`;
+  qAnswered = false;
+}
+function answer(i){
+  if(qAnswered) return;
+  qAnswered = true;
+  const q = questions[qIdx];
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns.forEach((b,idx)=>{ b.disabled=true; if(idx===q.ans) b.classList.add('correct'); });
+  const fb = document.getElementById('qfb');
+  if(i===q.ans){ qScore++; btns[i].classList.add('correct'); fb.className='quiz-feedback show ok'; fb.textContent='✅ ¡Correcto!'; }
+  else { btns[i].classList.add('wrong'); fb.className='quiz-feedback show fail'; fb.textContent=`❌ Incorrecto. La respuesta correcta es: "${q.opts[q.ans]}"`; }
+  document.getElementById('qnext').style.display='inline-block';
+}
+function nextQ(){ qIdx++; renderQuiz(); }
+function endQuiz(){
+  document.getElementById('quiz-container').style.display='none';
+  document.getElementById('qpf').style.width='100%';
+  const r = document.getElementById('quiz-result');
+  r.classList.add('show');
+  document.getElementById('r-score').textContent = qScore+'/'+questions.length;
+  const msgs = [
+    [0,3,'Sigue repasando el material del álbum. ¡Tú puedes! 💪'],
+    [4,6,'Buen intento. Revisa las unidades y vuelve a intentarlo. 📚'],
+    [7,8,'¡Muy bien! Tienes un sólido conocimiento de RSE. 🌟'],
+    [9,10,'¡Excelente! Eres un verdadero Agente de Cambio RSE. 🏆']
+  ];
+  const [,,msg] = msgs.find(([a,b])=>qScore>=a&&qScore<=b);
+  document.getElementById('r-msg').textContent = msg;
+}
+function resetQuiz(){
+  qIdx=0; qScore=0; qAnswered=false;
+  document.getElementById('quiz-container').style.display='block';
+  document.getElementById('quiz-result').classList.remove('show');
+  renderQuiz();
+}
+resetQuiz();
+
+/* ══════════════════════════
+   3. CASOS REALES
+══════════════════════════ */
+const casos = [
+  { emoji:'🚗', empresa:'Toyota', pais:'Japón / México', tag:'Medio Ambiente', tagCls:'tag-ambiental', desc:'Toyota implementa el programa "Toyota Environmental Challenge 2050", buscando plantas de manufactura con cero emisiones de CO₂. En México, fábricas como la de Guanajuato operan con energía solar y sistemas de ahorro de agua.', impacto:'-30% emisiones en sus plantas', materia:'ISO 26000 – Materia 4: Medio Ambiente' },
+  { emoji:'☕', empresa:'Starbucks', pais:'EUA / Global', tag:'Prácticas Laborales', tagCls:'tag-laboral', desc:'Starbucks ofrece cobertura de salud a sus baristas (incluso a tiempo parcial), pago de colegiatura universitaria y programas de ascenso interno. Su política de diversidad e inclusión es referente global.', impacto:'+85% satisfacción de empleados', materia:'ISO 26000 – Materia 3: Prácticas Laborales' },
+  { emoji:'🏦', empresa:'CEMEX', pais:'México / Global', tag:'RSE Social', tagCls:'tag-social', desc:'CEMEX creó el programa "Patrimonio Hoy" para que familias de bajos ingresos en México construyan su hogar con microcréditos y asesoría técnica. Ha beneficiado a más de 600,000 familias.', impacto:'+600,000 familias beneficiadas', materia:'ISO 26000 – Materia 7: Participación Comunitaria' },
+  { emoji:'👟', empresa:'Patagonia', pais:'EUA', tag:'Economía Circular', tagCls:'tag-ambiental', desc:'Patagonia repara gratuitamente sus productos, vende ropa de segunda mano y dona el 1% de sus ventas a causas ambientales. En 2022 su fundador donó la empresa entera a un fideicomiso ambiental.', impacto:'100% de energía renovable en operaciones', materia:'ISO 26000 – Materia 4: Medio Ambiente' },
+  { emoji:'🛒', empresa:'Walmart México', pais:'México', tag:'Derechos Humanos', tagCls:'tag-social', desc:'Walmex implementó una política de compra preferente a proveedores liderados por mujeres y pueblos indígenas, además de programas de capacitación laboral para personas con discapacidad.', impacto:'+40% proveedores inclusivos', materia:'ISO 26000 – Materia 2: Derechos Humanos' },
+  { emoji:'⚡', empresa:'Iberdrola', pais:'España / México', tag:'Sostenibilidad', tagCls:'tag-ambiental', desc:'Iberdrola es líder mundial en energías renovables. En México invierte en parques eólicos y solares, y publica un reporte de sostenibilidad anual verificado externamente con estándares GRI.', impacto:'50,000 MW de capacidad renovable global', materia:'ISO 26000 – Materia 4: Medio Ambiente' },
+];
+const cg = document.getElementById('casos-grid');
+casos.forEach(c=>{
+  cg.innerHTML+=`<div class="caso-card">
+    <div class="caso-header">
+      <div class="caso-emoji">${c.emoji}</div>
+      <div><div class="caso-empresa">${c.empresa}</div><div class="caso-pais">📍 ${c.pais}</div></div>
+    </div>
+    <div class="caso-body">
+      <span class="caso-tag ${c.tagCls}">${c.tag}</span>
+      <p class="caso-desc">${c.desc}</p>
+      <div class="caso-impacto">📊 Impacto: <span>${c.impacto}</span></div>
+      <div class="caso-materia">🔗 ${c.materia}</div>
+    </div>
+  </div>`;
+});
+
+/* ══════════════════════════
+   4. SOPA DE LETRAS
+══════════════════════════ */
+const sopaWords = ['RSE','ETICA','STAKEHOLDERS','ISO','SOSTENIBLE','GOBERNANZA','COMUNIDAD','AMBIENTE','INCLUSION','LIDERAZGO'];
+
+// Grid 14x14 with words placed
+const ROWS=14, COLS=14;
+let grid=[], cellStates=[], wordPositions={}, foundWords=new Set();
+let selStart=null;
+
+function buildSopa(){
+  grid = Array.from({length:ROWS},()=>Array(COLS).fill(''));
+  wordPositions = {};
+  // Place words manually (pre-computed for this grid)
+  const placements = [
+    {w:'RSE',r:0,c:0,dr:0,dc:1},
+    {w:'ETICA',r:2,c:1,dr:0,dc:1},
+    {w:'STAKEHOLDERS',r:4,c:0,dr:0,dc:1},
+    {w:'ISO',r:6,c:2,dr:0,dc:1},
+    {w:'SOSTENIBLE',r:8,c:0,dr:0,dc:1},
+    {w:'GOBERNANZA',r:10,c:0,dr:0,dc:1},
+    {w:'COMUNIDAD',r:1,c:13,dr:1,dc:0},
+    {w:'AMBIENTE',r:0,c:5,dr:1,dc:0},
+    {w:'INCLUSION',r:0,c:9,dr:1,dc:0},
+    {w:'LIDERAZGO',r:3,c:11,dr:1,dc:0},
+  ];
+  placements.forEach(({w,r,c,dr,dc})=>{
+    const cells=[];
+    for(let i=0;i<w.length;i++){ grid[r+dr*i][c+dc*i]=w[i]; cells.push([r+dr*i,c+dc*i]); }
+    wordPositions[w]=cells;
+  });
+  // Fill empty with random letters
+  const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) if(!grid[r][c]) grid[r][c]=letters[Math.floor(Math.random()*letters.length)];
+  cellStates = Array.from({length:ROWS},()=>Array(COLS).fill(''));
+  foundWords = new Set();
+  selStart = null;
+  renderSopaGrid();
+  renderWordList();
+}
+function renderSopaGrid(){
+  const el=document.getElementById('sopa-grid');
+  el.style.gridTemplateRows=`repeat(${ROWS},32px)`;
+  el.innerHTML='';
+  for(let r=0;r<ROWS;r++){
+    const row=document.createElement('div'); row.className='sopa-row';
+    for(let c=0;c<COLS;c++){
+      const cell=document.createElement('div');
+      cell.className='sopa-cell';
+      if(cellStates[r][c]==='found') cell.classList.add('found');
+      else if(cellStates[r][c]==='sel') cell.classList.add('selected');
+      cell.textContent=grid[r][c];
+      cell.dataset.r=r; cell.dataset.c=c;
+      cell.onclick=()=>selectCell(r,c,cell);
+      row.appendChild(cell);
+    }
+    el.appendChild(row);
+  }
+}
+function renderWordList(){
+  const el=document.getElementById('word-list');
+  el.innerHTML='';
+  sopaWords.forEach(w=>{
+    el.innerHTML+=`<div class="word-item${foundWords.has(w)?' found':''}" id="wi-${w}">${w}</div>`;
+  });
+  const st=document.getElementById('sopa-status');
+  if(foundWords.size===sopaWords.length){ st.textContent='🎉 ¡Encontraste todas las palabras!'; }
+  else { st.textContent=`${foundWords.size} / ${sopaWords.length} encontradas`; }
+}
+function selectCell(r,c,el){
+  if(cellStates[r][c]==='found') return;
+  if(!selStart){
+    // clear prev selection
+    for(let rr=0;rr<ROWS;rr++) for(let cc=0;cc<COLS;cc++) if(cellStates[rr][cc]==='sel') cellStates[rr][cc]='';
+    selStart={r,c};
+    cellStates[r][c]='sel';
+  } else {
+    // check if a word matches this line
+    checkWord(selStart.r, selStart.c, r, c);
+    selStart=null;
+    for(let rr=0;rr<ROWS;rr++) for(let cc=0;cc<COLS;cc++) if(cellStates[rr][cc]==='sel') cellStates[rr][cc]='';
+  }
+  renderSopaGrid();
+  renderWordList();
+}
+function checkWord(r1,c1,r2,c2){
+  // collect letters between two cells if on same row/col
+  let letters='';
+  const cells=[];
+  if(r1===r2){ // horizontal
+    const [s,e]=[Math.min(c1,c2),Math.max(c1,c2)];
+    for(let c=s;c<=e;c++){letters+=grid[r1][c];cells.push([r1,c]);}
+  } else if(c1===c2){ // vertical
+    const [s,e]=[Math.min(r1,r2),Math.max(r1,r2)];
+    for(let r=s;r<=e;r++){letters+=grid[r][c1];cells.push([r,c1]);}
+  } else return;
+  const rev=letters.split('').reverse().join('');
+  const match = sopaWords.find(w=>w===letters||w===rev);
+  if(match && !foundWords.has(match)){
+    foundWords.add(match);
+    cells.forEach(([r,c])=>cellStates[r][c]='found');
+  }
+}
+function resetSopa(){ buildSopa(); }
+buildSopa();
+
+/* ══════════════════════════
+   5. REFLEXIÓN FINAL
+══════════════════════════ */
+const compromisoPlaceholders = [
+  "Ej: Promoveré la economía circular en mi negocio aplicando programas de reciclaje…",
+  "Ej: Como futura administradora, integraré prácticas de inclusión laboral en los equipos…",
+  "Ej: Comunicaré de forma transparente las acciones responsables evitando el greenwashing…",
+  "Ej: Apoyaré a las comunidades donde opere mi empresa con programas de desarrollo local…",
+  "Ej: Evaluaré anualmente el impacto social y ambiental de mis decisiones empresariales…",
+];
+const cl=document.getElementById('compromisos-list');
+compromisoPlaceholders.forEach((p,i)=>{
+  cl.innerHTML+=`<div class="compromiso-item">
+    <div class="compromiso-num">${i+1}</div>
+    <textarea class="compromiso-input" id="comp-${i}" placeholder="${p}" rows="2"></textarea>
+  </div>`;
+});
+
+function generarDiploma(){
+  const nombre = document.getElementById('diploma-name-input').value.trim() || '—';
+  document.getElementById('diploma-name-display').textContent = nombre;
+  const comps=[];
+  for(let i=0;i<5;i++){
+    const v=document.getElementById('comp-'+i).value.trim();
+    if(v) comps.push(v);
+  }
+  const dc=document.getElementById('diploma-compromisos-display');
+  if(comps.length){
+    dc.innerHTML=`<h4>Mis compromisos RSE</h4><ol>${comps.map(c=>`<li>${c}</li>`).join('')}</ol>`;
+  } else {
+    dc.innerHTML='<h4>Mis compromisos RSE</h4><p style="color:#aaa;font-size:.85rem">No se registraron compromisos.</p>';
+  }
+  const diploma=document.getElementById('reflexion-diploma');
+  diploma.classList.add('show');
+  diploma.scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>
